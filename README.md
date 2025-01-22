@@ -36,6 +36,5 @@ This project is open source and available under the [MIT License](./LICENSE).
 ## Live Demo
 Check out the live demo of Boardly [here](https://boardly.netlify.app).
 
----
-
+___
 Enjoy using Boardly!

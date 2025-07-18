@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useDebounce } from "../hooks/useDebounce.js";
 
 export default function TodoBoardsPage({ onSelectBoard, todoBoards, setTodoBoards }) {
 
@@ -6,6 +7,13 @@ export default function TodoBoardsPage({ onSelectBoard, todoBoards, setTodoBoard
     const [editIndex, setEditIndex] = useState(null); 
     const [newTitle, setNewTitle] = useState(""); 
     const [newColor, setNewColor] = useState("");
+
+    const [searchTerm, setSearchTerm] = useState("");
+    const debouncedSearch = useDebounce(searchTerm, 400);
+
+    const boardsList = todoBoards.filter(board => 
+        board.title.toLowerCase().includes(debouncedSearch.toLowerCase())
+    );
 
     document.title = `TODO Boards [ ${todoBoards.length} ]`;
 
@@ -99,8 +107,15 @@ export default function TodoBoardsPage({ onSelectBoard, todoBoards, setTodoBoard
         <main className="todo-boards-container">
             <h2>TODO Borads {todoBoards.length}</h2>
 
+            <input type="serach" 
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                placeholder="Search Board..."
+                className="search-input"
+            />
+
             <div className="boards-grid">
-                {todoBoards.map((board, boardIndex) => {
+                {boardsList.map((board, boardIndex) => {
                     return (
 
                         <div className={`board-card ${isDragging && draggedBoardIndex === boardIndex ? "dragging" : ""}`}
